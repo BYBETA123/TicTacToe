@@ -40,14 +40,44 @@ public class tictactoe {
         return 1;
     }
 
-    public static void main(String[] args) {
+    public static int TicTacMute(Player player1, Player player2){
         // Creating the board
         Cell[] board = new Cell[9];
         for (int i=0;i<9;i++){
             board[i] = new Cell(0, 0);
         }
-        Player player1 = new Human("X");
-        Player player2 = new Easy("O");
+        // Main Game
+        int done = 0;
+        while (done==0) {
+            //Player 1
+            board = player1.move(board);
+            done = WinCondition(board, "X");
+            if (done==0){
+                //Player 2
+                board = player2.move(board);
+                done = WinCondition(board, "O");
+            }
+        }
+        if (done == 1){
+            return 3;
+        }
+        else{
+            if (WinCondition(board, "X")>0){
+                return 1;
+            }
+            else{
+                return 2;
+            }
+
+        }
+    }
+
+    public static int MainTicTacToe(Player player1, Player player2){
+        // Creating the board
+        Cell[] board = new Cell[9];
+        for (int i=0;i<9;i++){
+            board[i] = new Cell(0, 0);
+        }
         // Main Game
         int done = 0;
         while (done==0) {
@@ -67,9 +97,46 @@ public class tictactoe {
         System.out.println("Game Over");
         if (done == 1){
             System.out.println("The game is a draw");
+            return 3;
         }
         else{
-            System.out.println("The winner is: " + (WinCondition(board, "X")>0 ? "Player 1" : "Player 2"));
+            if (WinCondition(board, "X")>0){
+                System.out.println("The winner is Player 1");
+                return 1;
+            }
+            else{
+                System.out.println("The winner is Player 2");
+                return 2;
+            }
+
         }
+    }
+
+    public static void TicTacToeLoop(){
+        int win =0;
+        int player1win = 0;
+        int player2win = 0;
+        int draw = 0;
+        float total = 10000;
+        for (int i=0;i<total;i++){
+            win = TicTacMute(new Hard("X"), new Hard("O"));
+            if (win == 1){
+                player1win++;
+            }
+            if (win == 2){
+                player2win++;
+            }
+            if (win == 3){
+                draw++;
+            }
+        }
+        System.out.println("Player 1 wins: " + player1win + " with a win rate of " + (player1win/total)*100 + "%");
+        System.out.println("Player 2 wins: " + player2win + " with a win rate of " + (player2win/total)*100 + "%");
+        System.out.println("Draws: " + draw + " with a draw rate of " + (draw/total)*100 + "%");
+    }
+
+    public static void main(String[] args) {
+        // int winner = MainTicTacToe(new Easy("X"), new Easy("O"));
+        TicTacToeLoop();
     }
 }
