@@ -1,3 +1,4 @@
+package Java;
 abstract class Player {
     public abstract Cell[] move(Cell[] board);
     private String token;

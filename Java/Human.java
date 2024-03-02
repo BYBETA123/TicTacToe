@@ -1,3 +1,4 @@
+package Java;
 public class Human extends Player{
 
     private String playerInput;

@@ -1,3 +1,4 @@
+package Java;
 public class Cell {
     int row, col;
     String value;

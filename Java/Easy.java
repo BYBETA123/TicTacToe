@@ -1,3 +1,4 @@
+package Java;
 import java.util.Random;
 public class Easy extends Player{
 
