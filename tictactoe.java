@@ -1,7 +1,3 @@
-// Overarching file for the tictactoe game
-
-// import java.util.Scanner; // Importing the Scanner class to take in user input
-
 public class tictactoe {
 
     public static void printBoard(Cell[]board){
@@ -10,46 +6,6 @@ public class tictactoe {
         System.out.println("3|" + board[2].getValue() + board[5].getValue() + board[8].getValue());
         System.out.println("  ABC");
     }
-
-    public static boolean ValidateMove(int[] playerInputArray, String playerInput, Cell[] board){
-        if (playerInput.length() != 2){
-            return false;
-        }
-        try { // Try to convert the input to integers return false if it fails
-            playerInputArray[0] = playerInput.charAt(0) - 'A' + 1;
-            playerInputArray[1] = playerInput.charAt(1) - '0';
-        } catch (Exception e){
-            return false;
-        }
-
-        int localx = playerInputArray[0];
-        int localy = playerInputArray[1];
-
-        if (localx<1 || localx>3 || localy<1 || localy>3){
-            return false; // Out of bounds of the board
-        }
-
-        if (board[(localx-1)*3 + (localy-1)].getValue() != "N"){
-            return false; // The piece is already occupied
-        }
-        
-        return true;
-    }
-
-    public static int[] PlayerInput(int[] playerInputArray, Cell[] board){
-        System.out.print("Enter the row and column of your move: ");
-        // Taking Input
-        String playerInput = Util.InputString();
-
-        while (!ValidateMove(playerInputArray, playerInput, board)){
-            System.out.print("Invalid move, try again: ");
-            playerInput = Util.InputString();
-            playerInputArray[0] = playerInput.charAt(0) - 'A' + 1;
-            playerInputArray[1] = playerInput.charAt(1) - '0';
-        }
-        return playerInputArray;
-    }
-
     public static int WinCondition(Cell[] board, String player){
         if(board[0].getValue() == player && board[1].getValue() == player && board[2].getValue() == player){
             return 2;
@@ -80,7 +36,7 @@ public class tictactoe {
                 return 0; // If there is an empty space, the game is not over
             }
         }
-        // If no win condition is met and the board is full
+        // If no win condition is met and the board is full and is a draw
         return 1;
     }
 
@@ -90,31 +46,30 @@ public class tictactoe {
         for (int i=0;i<9;i++){
             board[i] = new Cell(0, 0);
         }
-
+        Player player1 = new Human("X");
+        Player player2 = new Easy("O");
         // Main Game
-        boolean done = false;
-        while (!done) {
+        int done = 0;
+        while (done==0) {
             printBoard(board);
             //Player 1
-            int playerInputArray[] = new int[2];
-            PlayerInput(playerInputArray, board);
-            int player1x = playerInputArray[0];
-            int player1y = playerInputArray[1];
-            board[(player1x-1)*3 + (player1y-1)].value = "X";
-            done = WinCondition(board, "X")>0 ? true : false;
-            if (!done){
+
+            board = player1.move(board);
+            done = WinCondition(board, "X");
+            if (done==0){
                 printBoard(board);
                 //Player 2
-                PlayerInput(playerInputArray, board);
-                int player2x = playerInputArray[0];
-                int player2y = playerInputArray[1];
-                board[(player2x-1)*3 + (player2y-1)].value = "O";
-                done = WinCondition(board, "O")>0 ? true : false;
+                player2.move(board);
+                done = WinCondition(board, "O");
             }
         }
         printBoard(board);
         System.out.println("Game Over");
-        System.out.println("The winner is: " + (WinCondition(board, "X")>0 ? "Player 1" : "Player 2"));
-
+        if (done == 1){
+            System.out.println("The game is a draw");
+        }
+        else{
+            System.out.println("The winner is: " + (WinCondition(board, "X")>0 ? "Player 1" : "Player 2"));
+        }
     }
 }
