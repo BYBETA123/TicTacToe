@@ -52,8 +52,8 @@ def ValidateMove(move, board):
         return False
     return True
 
-def WarpInput(move):
-    moveString = ""
+def WarpInput(move): # This function should be modified to not include
+    moveString = "" # the several if statements
     moveString = move[1]
     if move[0] == 'A':
         moveString += '1'
