@@ -52,8 +52,8 @@ def ValidateMove(move, board):
         return False
     return True
 
-def WarpInput(move):
-    moveString = ""
+def WarpInput(move): # This function should be modified to not include
+    moveString = "" # the several if statements
     moveString = move[1]
     if move[0] == 'A':
         moveString += '1'
@@ -236,7 +236,7 @@ def tictacbot(mute):
     board = [Cell(i, j) for i in range(3) for j in range(3)]
     done=False
     computer2 = Hard('O')
-    computer1 = Easy('X')
+    computer1 = Hard('X')
     while(not(done)):
         board = computer1.move(board)
         done = WinCondition(board, 'X', mute)
@@ -374,7 +374,25 @@ GREEN = (0, 255, 0)
 
 
 #main loop()
-TicTacAnimate()
+# TicTacAnimate()
 # tictactoe()
 # tictactoesingle()
-# tictacbot(False)
+tictacbot(False)
+
+total = 10000
+player1win = 0
+player2win = 0
+draw = 0
+
+
+for i in range(total):
+    if tictacbot(True) == 'X':
+        player1win += 1
+    elif tictacbot(True) == 'O':
+        player2win += 1
+    else:
+        draw += 1
+print("Player 1 wins: " + str(player1win) + " with a win rate of " + str(player1win/total*100) + "%")
+print("Player 2 wins: " + str(player2win) + " with a win rate of " + str(player2win/total*100) + "%")
+print("Draws: " + str(draw) + " with a draw rate of " + str(draw/total*100)+ "%")
+
